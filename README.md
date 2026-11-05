@@ -16,6 +16,7 @@ Project Eucalyptus is authored by the Orbio Earth team—Maxime Rischard, Timoth
 - [Detection and Quantification on Landsat 8/9](notebooks/landsat.ipynb)
 - [Detection and Quantification on EMIT](notebooks/emit.ipynb)
 - [Synthetically inserting methane to create training data](notebooks/synthetic_training_data_generation_demo.ipynb)
+- [gum: the Sentinel-2 detector in C, for bulk runs off the L1C archive](gum/README.md)
 
 
 # Running the notebooks

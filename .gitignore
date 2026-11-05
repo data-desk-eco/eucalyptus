@@ -3,3 +3,6 @@
 .ruff_cache/
 __pycache__/
 site/
+gum/gum
+gum/gum.bin
+gum/test.jsonl

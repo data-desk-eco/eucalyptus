@@ -40,3 +40,47 @@ plumes, run on the jump host from the s2e scene manifests
 
 The Shenandoah S1 likelihood is the same as the torch run above. The run
 of 67 scenes took 43 s with 3 workers.
+
+## gum over the basin
+
+`basin.sql` makes `gum` jobs for every pad in `queue.csv`: all scenes of
+each pad's manifest under 50% cloud. On 5 November 2026 this run replaced
+the mars-s2l service (`s2e-beetaloo`, now stopped) on the jump host. The
+output is `~/gum/basin.jsonl` on the jump host. `basin_summary.sql` makes
+the tables below.
+
+```bash
+/opt/burnoff/duckdb < beetaloo/basin.sql > basin.tsv
+. /etc/profile.d/eodata.sh && GUM_THREADS=3 gum/gum gum/gum.bin \
+  < basin.tsv > basin.jsonl
+duckdb < beetaloo/basin_summary.sql
+```
+
+The 1,910 scenes took 18 minutes with 3 workers (41 CPU minutes). One
+scene failed: `tile-part not found` on S2B 2017-12-30 (53KNB, N0500).
+
+| Pad | Scenes | Targets | With plumes | Plumes | Max likelihood |
+| --- | --- | --- | --- | --- | --- |
+| carpentaria-1 | 387 | 380 | 122 | 173 | 0.89 |
+| carpentaria-2 | 534 | 525 | 142 | 174 | 0.91 |
+| carpentaria-4 | 269 | 262 | 86 | 134 | 0.98 |
+| shenandoah-s1 | 529 | 520 | 155 | 240 | 0.97 |
+| shenandoah-s2 | 191 | 186 | 64 | 96 | 0.87 |
+
+Plumes with a source within 500 m of the pad (`q` in t/h per m/s of wind):
+
+| Pad | Date | Likelihood | Pixels | Distance, m | q |
+| --- | --- | --- | --- | --- | --- |
+| carpentaria-1 | 2020-06-27 | 0.48 | 137 | 216 | 0.47 |
+| carpentaria-1 | 2023-10-30 | 0.43 | 185 | 455 | 0.46 |
+| carpentaria-1 | 2025-07-08 | 0.36 | 156 | 326 | 0.47 |
+| carpentaria-2 | 2024-08-20 | 0.42 | 101 | 355 | 0.28 |
+| carpentaria-4 | 2025-10-24 | 0.32 | 126 | 416 | 0.62 |
+| carpentaria-4 | 2026-05-17 | 0.34 | 186 | 297 | 0.74 |
+| shenandoah-s1 | 2026-04-22 | 0.32 | 54 | 374 | 1.18 |
+| shenandoah-s2 | 2023-11-04 | 0.32 | 59 | 91 | 0.26 |
+| shenandoah-s2 | 2026-01-02 | 0.37 | 167 | 425 | 0.70 |
+
+Shenandoah S1 on 2026-10-11 gives `max` 0.0976 again. All plumes near a
+pad are weak (likelihood under 0.5). The 197 targets with a likelihood
+of 0.5 or more have their plumes more than 500 m from the pad.

@@ -84,3 +84,55 @@ Plumes with a source within 500 m of the pad (`q` in t/h per m/s of wind):
 Shenandoah S1 on 2026-10-11 gives `max` 0.0976 again. All plumes near a
 pad are weak (likelihood under 0.5). The 197 targets with a likelihood
 of 0.5 or more have their plumes more than 500 m from the pad.
+
+### Review
+
+`review.sql` picks 42 targets from the basin run: the 9 plumes within
+500 m of a pad, the 8 strongest plumes, the cluster 1.6–2 km north of
+Shenandoah S1, and every pad on the mars-s2l dates. `crops.tsv` lists the
+target and reference crops, which `gum gum.bin B12 X Y` makes on the jump
+host. `review.py` then runs the model in torch and draws true colour, the
+B12/B11 change against each reference and the likelihood. A second row
+shows ±600 m around the strongest plume, with the change averaged over
+5 × 5 pixels. In RdBu, red is a B12/B11 decrease, which is the methane
+direction. Torch gives the same `max` as gum on all 42 targets.
+
+```bash
+duckdb < beetaloo/review.sql   # in the directory of basin.jsonl, basin.tsv
+.venv/bin/python beetaloo/review.py sel.json crops png
+```
+
+Findings:
+
+- No pad shows more plumes than the rest of the box. Sources within
+  500 m of a pad occur at 11.5 per km², against 31–42 per km² at
+  0.5–2.5 km.
+- gum screens the references for cloud, but not the target. Targets with
+  more than 5% bad pixels are 246 of 1,873, with 145 plumes. Clear targets
+  still have plumes in 30% of scenes (485 of 1,627).
+- The strongest plumes in clear scenes (Carpentaria 4 2022-07-27,
+  Shenandoah S1 2022-04-18 and 2017-11-10) have a B12/B11 decrease of 1–2%
+  against both references. Each decrease is a compact patch of 100–200 m.
+  None has a downwind shape, and none starts at a pad or other structure.
+- The most persistent cluster, 1.7 km north of Shenandoah S1 (13 dates in
+  two 400 m cells), sits on a small bright object east of the road. On
+  2020-01-29 (likelihood 0.92) the decrease is a 100 m patch on that
+  object. This is more likely a surface or registration effect than a
+  source, but an operator map could show a structure there.
+- The near-pad plume at Shenandoah S2 on 2023-11-04 is before the queue
+  start for that pad (2024-01-01). The near-pad plume at Carpentaria 1 on
+  2020-06-27 is in one reference only and is as strong as its
+  surroundings.
+- mars-s2l dates: at Shenandoah S1 (2026-10-11) and Shenandoah S2
+  (2026-08-15), the change maps show only the pad structures. At
+  Carpentaria 4 (2026-10-19), a sharp 900 m band of B12/B11 decrease
+  goes NNW from the pad. The model gives it 0.12. The band is also there
+  on 10-24 and 11-03 against 10-04, but not on 10-24 against 10-19. Thus
+  it is a surface change that started between 4 and 19 October (possibly a
+  burn), not a plume.
+- On Carpentaria 4 2022-07-27, the pad has a strong B12/B11 increase
+  against both references, which agrees with flare heat. The model does
+  not flag it.
+
+The bulk run screens fast, but its plumes need review. With these pads, a
+likelihood over 0.9 in a clear scene did not give a plume shape.

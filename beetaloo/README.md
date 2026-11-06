@@ -136,3 +136,44 @@ Findings:
 
 The bulk run screens fast, but its plumes need review. With these pads, a
 likelihood over 0.9 in a clear scene did not give a plume shape.
+
+### The cluster north of Shenandoah S1
+
+On 5 of the 13 dates (2020-01-09, 01-14, 01-29, 02-13 and 2022-04-08),
+gum puts the source on the same pixel: 30 m west and 1,690 m north of the
+pad centre, at -16.82613, 133.65180. No feature in the archive's
+`infrastructure` table or in OpenStreetMap is within 1.5 km. The other
+8 dates are spread 300–500 m around it.
+
+`north.py` runs on the jump host on gum crops of all 459 clear scenes of
+the pad. It gives the contrast of the pixel against a 4–12 pixel ring, and
+image chips (`chips.png`):
+
+```bash
+uv run --with numpy --with matplotlib python north.py 20191230 \
+  20190713 20190812 20190926 20191105 20191230 20200114 20200218 > north.out
+```
+
+- The object is a small bright point at the end of a short east–west
+  spur track from the north–south road. The spur is first visible on
+  2019-08-12, and the bright point on 2019-09-26. Before that, the pixel
+  is the same as its surroundings. This was when Origin's Kyalla 117 N2
+  work started, 1.7 km south. The approvals for Kyalla 117 N2 include
+  groundwater monitoring bores on 50 m × 50 m leases with up to 400 m of
+  access track. The site could be one of these bores. The NT government
+  site refuses scripted downloads, so the bore coordinates in those
+  documents are not checked.
+- From November 2019 the object is 5–20% brighter than its surroundings
+  in B11. Its B12/B11 contrast is +2% to +4% until 2019-12-30. On
+  2020-01-14 the contrast changes to between -1% and -5%, and it stays
+  there until April 2020.
+- The January–February 2020 detections compare targets after this step
+  with references before it. A plume does not stay for 3 months, so this
+  is a change of the surface of the site after the first wet-season rain.
+- The road is also a boundary between two surfaces that change
+  differently in the wet and dry seasons. In the change maps, the east
+  and west sides of the road go in opposite directions. The dates that do
+  not touch the object are on this boundary.
+
+Thus, the cluster is a surface effect at a small site and on the road
+edge. It is not a repeated emission.

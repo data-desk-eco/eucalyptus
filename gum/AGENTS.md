@@ -59,3 +59,10 @@ services on the jump host share it.
   intrinsics kernel was not faster.
 - 180 rows (4 sites, Aug–Oct 2025, N0511) with 4 workers took 118 s while
   the host was shared with mars-s2l.
+
+## Where it runs
+
+The Data Desk runs gum as `fetch@gum` (`etl/fetch/gum` in
+data-desk-eco/data-desk) on the jump host, from `/srv/eucalyptus`. That
+checkout moves only when it is deployed: `git -C /srv/eucalyptus pull`.
+The next run builds `gum` and `gum.bin` again.
